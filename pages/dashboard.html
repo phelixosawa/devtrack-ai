@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevTrack AI- Dashboard</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <div class="app-container">
+
+        <!-- sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                DevTrack AI
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                    <li><a href="project.html">Projects</a></li>
+                    <li><a href="log-session.html">Log Session</a></li>
+                    <li><a href="analytics.html">Analytics</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- main content -->
+        <div class="main-content">
+
+            <!-- top navbar -->
+            <header class="topbar">
+                <h1>Dashboard</h1>
+                <button class="primary-btn">+ Log Session</button>
+            </header>
+
+            <!-- page content -->
+            <section class="content">
+                <div class="card">
+                    <h2>Welcome to DevTrack AI</h2>
+                    <p>Your productivity intelligence dashboard.</p>
+                </div>
+
+                <!-- overview stats -->
+                <div class="stats-grid">
+
+                    <div class="stat-card">
+                        <h3>Total Projects</h3>
+                        <p class="stat-value" id="total-projects">0</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <h3>Total Hours</h3>
+                        <p class="stat-value" id="total-hours">0h</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <h3>Active Projects</h3>
+                        <p class="stat-value" id="active-projects">0</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <h3>Current Streak</h3>
+                        <p class="stat-value" id="current-streak">0 days</p>
+                    </div>
+                </div>
+
+                <!-- placeholder chart -->
+                <div class="card">
+                    <h2>Weekly Productivity</h2>
+                    <p>Chart will appear here.</p>
+                </div>
+            </section>
+
+        </div>
+
+    </div>
+    <script src="../js/main.js"></script>
+</body>
+</html>

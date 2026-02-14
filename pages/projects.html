@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevTrack AI - Projects</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="logo">
+                DevTrack AI
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                    <li><a href="projects.html">Projects</a></li>
+                    <li><a href="log-session.html">Log Session</a></li>
+                    <li><a href="analytics.html">Analytics</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <div class="main-content">
+
+            <header class="topbar">
+                <h1>Projects</h1>
+                <button class="primary-btn" id="open-project-form">
+                    + New Project
+                </button>
+            </header>
+
+            <section class="content">
+
+                <!-- project form -->
+                <div class="card" id="project-form-card" style="display: none;">
+                    <h2>Create New Project</h2>
+                    <form id="project-form">
+                        <input type="text" id="project-name" placeholder="Project Name" required>
+                        <textarea id="project-description" placeholder="Project Description"></textarea>
+                        <select id="project-status">
+                            <option value="Active">Active</option>
+                            <option value="Paused">Paused</option>
+                            <option value="Completed">Completed</option>
+                        </select>
+                        <button type="submit" class="primary-btn">Save Project</button>
+                    </form>
+                </div>
+
+                <!-- project grid -->
+                <div class="projects-grid" id="projects-container">
+                    <!-- projects will render here -->
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="../js/storage.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+</html>
