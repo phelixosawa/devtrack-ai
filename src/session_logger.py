@@ -1,37 +1,17 @@
-import json
-import os
 import uuid
 from datetime import datetime
-
-BASE_DIR = os.path.dirname(__file__)
-LOG_FILE = os.path.join(BASE_DIR, "..", "logs", "sessions.json")
-ACTIVE_FILE = os.path.join(BASE_DIR, "..", "logs", "active_session.json")
+from src.storage import Storage
 
 
 class SessionLogger:
 
-    def _safe_load_json(self, path, default):
-        if not os.path.exists(path):
-            return default
-
-        try:
-            with open(path, "r") as f:
-                content = f.read().strip()
-                if not content:
-                    return default
-                return json.loads(content)
-        except (json.JSONDecodeError, OSError):
-            return default
+    def __init__(self):
+        self.storage = Storage()
 
     def start_session(self, project_name: str, description: str = "", tags=None):
 
-        if os.path.exists(ACTIVE_FILE):
-            active = self._safe_load_json(ACTIVE_FILE, None)
-            if active:
-                raise Exception("A session is already running.")
-            else:
-                # Corrupted or empty file → remove it
-                os.remove(ACTIVE_FILE)
+        if self.storage.get_active_session():
+            raise Exception("A session is already running.")
 
         session = {
             "id": str(uuid.uuid4()),
@@ -41,14 +21,13 @@ class SessionLogger:
             "tags": tags or []
         }
 
-        with open(ACTIVE_FILE, "w") as f:
-            json.dump(session, f, indent=4)
+        self.storage.save_active_session(session)
 
         print("Session started.")
 
     def end_session(self):
 
-        session = self._safe_load_json(ACTIVE_FILE, None)
+        session = self.storage.get_active_session()
 
         if not session:
             raise Exception("No active session.")
@@ -60,29 +39,19 @@ class SessionLogger:
         session["end_time"] = end_time.isoformat()
         session["duration_minutes"] = round(duration, 2)
 
-        self._save_session(session)
-
-        if os.path.exists(ACTIVE_FILE):
-            os.remove(ACTIVE_FILE)
+        self.storage.append_session(session)
+        self.storage.clear_active_session()
 
         print("Session ended.")
         print(f"Duration: {round(duration, 2)} minutes")
 
-    def _save_session(self, session_data):
-
-        sessions = self._safe_load_json(LOG_FILE, [])
-
-        sessions.append(session_data)
-
-        with open(LOG_FILE, "w") as f:
-            json.dump(sessions, f, indent=4)
-
     def get_active_session(self):
-        session = self._safe_load_json(ACTIVE_FILE, None)
+
+        session = self.storage.get_active_session()
 
         if not session:
             return None
-        
+
         start_time = datetime.fromisoformat(session["start_time"])
         now = datetime.utcnow()
         duration = (now - start_time).total_seconds() / 60

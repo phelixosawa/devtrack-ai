@@ -1,5 +1,6 @@
 import argparse
 from src.session_logger import SessionLogger
+from src.analytics import Analytics
 
 logger = SessionLogger()
 
@@ -8,17 +9,20 @@ def main():
     parser = argparse.ArgumentParser(prog="devtrack")
     subparsers = parser.add_subparsers(dest="command")
 
-    # START
+    # start
     start_parser = subparsers.add_parser("start")
     start_parser.add_argument("--project", required=True)
     start_parser.add_argument("--desc", default="")
     start_parser.add_argument("--tags", nargs="*", default=[])
 
-    # STOP
+    # stop
     subparsers.add_parser("stop")
 
-    # STATUS
+    # status
     subparsers.add_parser("status")
+
+    # stats
+    subparsers.add_parser("stats")
 
     args = parser.parse_args()
 
@@ -44,6 +48,19 @@ def main():
             print(f"Running for: {session['running_minutes']} minutes")
             print(f"Description: {session['description']}")
             print(f"Tags: {', '.join(session['tags'])}")
+
+    elif args.command == "stats":
+        analytics = Analytics()
+        stats = analytics.today_stats()
+
+        if not stats:
+            print("No sessions recorded today.")
+        else:
+            print("Today's Stats:")
+            print(f"Total time: {stats['total_minutes']} minutes")
+            print(f"Sessions: {stats['session_count']}")
+            print(f"Average session: {stats['average_minutes']} minutes")
+            print(f"Longest session: {stats['longest_minutes']} minutes")
 
     else:
         parser.print_help()
