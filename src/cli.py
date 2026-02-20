@@ -26,44 +26,47 @@ def main():
 
     args = parser.parse_args()
 
-    if args.command == "start":
-        logger.start_session(
-            project_name=args.project,
-            description=args.desc,
-            tags=args.tags
-        )
+    try:
+        if args.command == "start":
+            logger.start_session(
+                project_name=args.project,
+                description=args.desc,
+                tags=args.tags
+            )
 
-    elif args.command == "stop":
-        logger.end_session()
+        elif args.command == "stop":
+            logger.end_session()
 
-    elif args.command == "status":
-        session = logger.get_active_session()
+        elif args.command == "status":
+            session = logger.get_active_session()
 
-        if not session:
-            print("No active session.")
+            if not session:
+                print("No active session.")
+            else:
+                print("Active session:")
+                print(f"Project: {session['project']}")
+                print(f"Started: {session['start_time']}")
+                print(f"Running for: {session['running_minutes']} minutes")
+                print(f"Description: {session['description']}")
+                print(f"Tags: {', '.join(session['tags'])}")
+
+        elif args.command == "stats":
+            analytics = Analytics()
+            stats = analytics.today_stats()
+
+            if not stats:
+                print("No sessions recorded today.")
+            else:
+                print("Today's Stats:")
+                print(f"Total time: {stats['total_minutes']} minutes")
+                print(f"Sessions: {stats['session_count']}")
+                print(f"Average session: {stats['average_minutes']} minutes")
+                print(f"Longest session: {stats['longest_minutes']} minutes")
+
         else:
-            print("Active session:")
-            print(f"Project: {session['project']}")
-            print(f"Started: {session['start_time']}")
-            print(f"Running for: {session['running_minutes']} minutes")
-            print(f"Description: {session['description']}")
-            print(f"Tags: {', '.join(session['tags'])}")
-
-    elif args.command == "stats":
-        analytics = Analytics()
-        stats = analytics.today_stats()
-
-        if not stats:
-            print("No sessions recorded today.")
-        else:
-            print("Today's Stats:")
-            print(f"Total time: {stats['total_minutes']} minutes")
-            print(f"Sessions: {stats['session_count']}")
-            print(f"Average session: {stats['average_minutes']} minutes")
-            print(f"Longest session: {stats['longest_minutes']} minutes")
-
-    else:
-        parser.print_help()
+            parser.print_help()
+    except Exception as e:
+        print(f"Error: {e}")
 
 
 if __name__ == "__main__":
