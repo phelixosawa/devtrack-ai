@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 from src.storage import Storage
-
+from src.exceptions import SessionActiveError, NoActiveSessionError
 
 class SessionLogger:
 
@@ -11,7 +11,7 @@ class SessionLogger:
     def start_session(self, project_name: str, description: str = "", tags=None):
 
         if self.storage.get_active_session():
-            raise Exception("A session is already running.")
+            raise SessionActiveError("A session is already running.")
 
         session = {
             "id": str(uuid.uuid4()),
@@ -30,7 +30,7 @@ class SessionLogger:
         session = self.storage.get_active_session()
 
         if not session:
-            raise Exception("No active session.")
+            raise NoActiveSessionError("No active session.")
 
         end_time = datetime.utcnow()
         start_time = datetime.fromisoformat(session["start_time"])
