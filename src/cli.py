@@ -2,6 +2,7 @@ import argparse
 from src.session_logger import SessionLogger
 from src.analytics import Analytics
 from src.exceptions import DevTrackError
+from src.logger_config import logger as system_logger
 
 logger = SessionLogger()
 
@@ -69,6 +70,7 @@ def main():
     except DevTrackError as e:
         print(f"Error: {e}")
     except Exception as e:
+        system_logger.exception("Unexpected system error occurred.")
         print("Unexpected system error.")
 
 if __name__ == "__main__":

@@ -9,7 +9,7 @@ class SessionLogger:
         self.storage = Storage()
 
     def start_session(self, project_name: str, description: str = "", tags=None):
-
+        
         if self.storage.get_active_session():
             raise SessionActiveError("A session is already running.")
 

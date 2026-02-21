@@ -24,14 +24,39 @@ git clone <your-repo-url>
 cd devtrack-ai
 # Run commands from the project root
 python3 -m src.cli <command>
-# Start session
+# ▶ Start a session
 python3 -m src.cli start --project <project-name> --desc "description" --tags tag1 tag2
-# Example
-python3 -m src.cli start --project devtrack-ai --desc "Refactoring CLI boundary" --tags backend refactor
-# Stop session
+# ⏹ Stop a session
 python3 -m src.cli stop
-# View active session
+# 📊 View active session
 python3 -m src.cli status
-# View today's statistics
+# 📈 View today's statistics
 python3 -m src.cli stats
-```bash 
+
+🏗 Architecture
+src/
+│
+├── cli.py               # CLI interface layer (user interaction + error boundary)
+├── session_logger.py    # Session lifecycle management
+├── analytics.py         # Aggregated statistics logic
+├── logger_config.py    # System-level logging configuration
+└── storage.py           # JSON persistence abstraction
+
+💾 Data Storage
+Session data is stored in:
+logs/sessions.json
+logs/active_session.json
+
+---
+
+## 📝 Logging
+
+DevTrack AI logs unexpected system-level errors internally.
+
+Log file location:
+
+logs/devtrack.log
+
+- Domain errors (e.g., starting an already active session) are handled gracefully and are not logged.
+- Unexpected system errors are logged with full stack traces.
+- Logging helps with debugging without exposing internal details to users.
